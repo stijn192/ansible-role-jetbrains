@@ -1,14 +1,39 @@
---- 
-  - name: Get plugin filepath
+---   
+  - name: Get plugin URL
     uri:
-        url: "https://plugins.jetbrains.com/pluginManager/?action=download&id={{item1}}&build={{item0.version}}"
-        headers:
-            - "{{item0.full_name}}/{{ item0.version | regex_replace('^[A-Z]{2}-','')}}"
-        status_code: 302
+        url: "https://plugins.jetbrains.com/pluginManager/?action=download&id={{item.1}}&build={{item.0.version}}"
+        status_code: 200
     with_nested: 
-        - "{{ jetbrains_plugin }}"
         - "{{ jetbrains_applications }}"
+        - "{{ jetbrains_plugins }}"
     register: urls
     
-  - debug:
-      msg: "{{urls}}"
+  - name: Ensures tmp dir exists
+    file: 
+      path: "~/.ansible/tmp/{{item.item.0.name}}/"
+      state: directory
+    with_items:
+      - "{{urls.results}}"
+      
+  - name: Download extension file
+    get_url:
+      url: "{{item.url}}"
+      dest: "~/.ansible/tmp/{{item.item.0.name}}/{{item.item.1}}.zip"
+    with_items:
+      - "{{urls.results}}"
+    register: download_results
+      
+  - name: Ansible find Application Support Directory
+    file:
+      path: "~/Library/Application Support/{{item.item.0.full_name}}{{item.item.0.major_minor}}"
+      state: directory
+    with_items: "{{urls.results}}"   
+    register: library_dirs
+      
+  - name: Install Module
+    unarchive:
+      src: "~/.ansible/tmp/{{item.item.0.name}}/{{item.item.1}}.zip"
+      dest: "~/Library/Application Support/{{item.item.0.full_name}}{{item.item.0.major_minor}}/"
+    with_items:
+      - "{{urls.results}}"
+    

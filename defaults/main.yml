@@ -1,6 +1,7 @@
 ---
 jetbrains_applications: 
-    - {name: PyCharm, full_name: PyCharm CE, version: PC-182.4505.26, major_minor: "2018.2"}
-    - {name: PhpStorm, full_name: PhpStorm, version: PS-182.4892.16, major_minor: "2018.2"}
+    - {name: PyCharm, full_name: PyCharmCE, version: "PC-182.4505.26", major_minor: "2018.2"}
+    - {name: PhpStorm, full_name: PhpStorm, version: "PS-182.4892.16", major_minor: "2018.2"}
 jetbrains_plugins:
     - org.intellij.xquery.marklogic
+    - YAML%2FAnsible%20support
