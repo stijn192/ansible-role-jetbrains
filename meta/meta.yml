@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: stijn192
+  description: Install JetBrains extensions through Ansible
+  company: "Stijzermans"
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.5
+  platforms:
+    - name: MacOSX
+      versions:
+        - all
+        - any
+  galaxy_tags:
+    - development
+    - system
+    - packaging

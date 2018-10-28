@@ -1,0 +1,14 @@
+--- 
+  - name: Get plugin filepath
+    uri:
+        url: "https://plugins.jetbrains.com/pluginManager/?action=download&id={{item1}}&build={{item0.version}}"
+        headers:
+            - "{{item0.full_name}}/{{ item0.version | regex_replace('^[A-Z]{2}-','')}}"
+        status_code: 302
+    with_nested: 
+        - "{{ jetbrains_plugin }}"
+        - "{{ jetbrains_applications }}"
+    register: urls
+    
+  - debug:
+      msg: "{{urls}}"
